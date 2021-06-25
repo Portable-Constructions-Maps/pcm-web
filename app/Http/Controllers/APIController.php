@@ -48,7 +48,7 @@ class APIController extends Controller
         return $worker;
     }
     public function getCountWorkerByLocation(){
-        $url = env('BASE_API_URL') . "by_location/testing";
+        $url = "http://34.70.96.106:8005/api/v1/by_location/testing";
         $request = Http::get($url)->json();
         $location = $request['locations'];
         $data = [];
