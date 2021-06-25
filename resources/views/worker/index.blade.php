@@ -4,9 +4,9 @@
     <div class="section-header">
       <h1>Daftar Pekerja</h1>
     </div>
-    <div class="section" id="data_by_locations"> 
-    </div>
-    <div class="section-body">
+    <h2 class="section-title">Workers by location</h2>
+      <p class="section-lead">This page is information Workers by location.</p>
+    <div class="section" id="data_by_locations"></div>
       <h2 class="section-title">List of Workers</h2>
       <p class="section-lead">This page is for managing Workers.</p>
       <div class="justify-content-center">
@@ -37,6 +37,5 @@
         </div>
       </div>
       </div>
-    </div>
   </section>
 @endsection
