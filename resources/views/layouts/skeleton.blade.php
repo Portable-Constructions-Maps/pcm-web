@@ -26,7 +26,7 @@
 
 <script type="text/javascript">
 function getWorkerByLocation(){
-  var hostApi = "http://10.50.0.20:8000/api/by_location/json";
+  var hostApi = "http://10.50.0.11:8000/api/by_location/json";
   var card = document.getElementById("data_by_locations");
   $.ajax({
     url: hostApi,
@@ -57,7 +57,7 @@ function getWorkerByLocation(){
   })
 }
 function getWorker(){
-  var hostApi = "http://10.50.0.20:8000/worker/show/json";
+  var hostApi = "http://10.50.0.11:8000/worker/show/json";
   var i = 1;
   var table = $("#tworker").DataTable({
     ajax : {
