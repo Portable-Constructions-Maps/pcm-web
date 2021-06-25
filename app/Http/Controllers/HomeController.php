@@ -34,7 +34,7 @@ class HomeController extends Controller
         $result = $request['efficacy'];
         $room = $result['accuracy_breakdown'];
         $timestamp = $result['last_calibration_time'];
-        $lastCalibrate =  Carbon::parse($timestamp)->diffForHumans();
+        $lastCalibrate =  Carbon::createFromTimestamp($timestamp)->diffForHumans();
        
         return view('rooms.index')
             ->with('calibrated',$lastCalibrate)
