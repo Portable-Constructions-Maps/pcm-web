@@ -12,24 +12,9 @@
           <!-- <div class="breadcrumb-item">Page</div> -->
       </div>
   </div>
-  Kalibrasi terakhir : <b>{{__($calibrated)}}</b> &nbsp; <a href="{{route('pcm.calibrate')}}" class="btn btn-success">Calibrate Now</a>
-  
+  Kalibrasi terakhir : <b>{{__($calibrated)}}</b> &nbsp; <a href="{{route('pcm.calibrate')}}" class="btn btn-success" id="btnCalibrate">Calibrate Now</a>
+
   <div class="section-body">
-    @if ($message = Session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        {{ $message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @elseif( $message = Session('error'))
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        {{ $message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    @endif
     <br>
       <div class="row">
         @foreach ($rooms as $key => $item)
@@ -49,7 +34,7 @@
           </div>
       </div>
         @endforeach
-         
+
       </div>
       {{-- <div class="row">
           <div class="col">
@@ -66,4 +51,21 @@
       </div> --}}
   </div>
 </section>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+<script>
+@if(Session::has('success'))
+    iziToast.success({
+        title: 'Sukses',
+        message: 'Berhasil kalibrasi !',
+        position: 'topRight'
+    });
+@endif
+@if(Session::has('error'))
+    tiziToast.error({
+        title: 'Gagal',
+        message: 'Gagal melakukan kalibrasi !',
+        position: 'topRight'
+    });
+@endif
+</script>
 @endsection
