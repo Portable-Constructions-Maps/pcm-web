@@ -63,7 +63,7 @@ class APIController extends Controller
         $result  = [
             'data' => $data
         ];
-        return $result;
+        return $data;
     }
     public function index()
     {

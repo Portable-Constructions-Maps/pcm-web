@@ -29,15 +29,32 @@
 <script type="text/javascript">
 function getWorkerByLocation(){
   var hostApi = "http://10.50.0.20:8000/api/by_location/json";
+  var card = document.getElementById("data_by_locations");
   $.ajax({
     url: hostApi,
     method : "GET",
     type : "json",
     success : function(data){
-      // array.forEach(element => {
-      //   console.log(data[element])
-      // });
-      console.log(data)
+      data.forEach(element => {
+        console.log(element.locations)
+        card.innerHTML = (
+          " <div class='row'>" +
+            "<div class='col-lg-3 col-md-6 col-sm-6 col-12'>"+
+             " <div class='card card-statistic-1'>"+
+                  "<div class='card-icon bg-primary'>"+
+                     "<i class='far fa-user'></i>"+
+                 " </div>"+
+                 " <div class='card-wrap'>"+
+                     " <div class='card-header'>"+
+                          "<h4>"+element.locations+"</h4>"+
+                     " </div>"+
+                     " <div class='card-body'>"
+                      +element.total+
+                    " Pekerja </div>"+
+               "   </div>"+
+            "  </div>"+
+      "</div>")
+      });
     }
   })
 }
@@ -66,7 +83,7 @@ function getWorker(){
     table.ajax.reload()
   }, 1000)
 }
-getWorkerByLocation()
+setInterval(getWorkerByLocation,1000)
 getWorker()
 </script>
 @stack('javascript')
