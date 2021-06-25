@@ -33,7 +33,7 @@ class HomeController extends Controller
         $result = $request['efficacy'];
         $room = $result['accuracy_breakdown'];
         $lastCalibrate = $result['last_calibration_time'];
-       
+
         return view('rooms.index')
             ->with('calibrated',$lastCalibrate)
             ->with('rooms', $room);
