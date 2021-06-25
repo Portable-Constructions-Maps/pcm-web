@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 class WorkerController extends Controller
 {
@@ -21,10 +22,11 @@ class WorkerController extends Controller
         foreach($result as $items){
             $location =  $items['location'];
             foreach($items['devices'] as $a){
+                $timestamp = $a['timestamp'];
                 $data[] = [
                     'worker' => $a['device'],
                     'active_mins' => $a['active_mins'] ,
-                    'timestamp' => $a['timestamp'],
+                    'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
                     'location' => $location
                 ];
             }

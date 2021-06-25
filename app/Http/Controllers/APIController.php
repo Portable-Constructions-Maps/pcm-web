@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
@@ -15,10 +15,17 @@ class APIController extends Controller
      */
    
     public function calibrate(){
-        $url = env('BASE_API_URL') . "api/v1/calibrate/testing";
+        $url = env('BASE_API_URL') . "calibrate/testing";
         $result = Http::get($url)->json();
+        $data  = [
+            'data' => $result
+        ];
+        if($result['success']){
+            return redirect()->back()->with('success', 'Berhasil Kalibrasi');
+        }else {
+            return redirect()->back()->with('error', 'Gagal Kalibrasi');
+        }
 
-        return $result;
     }
     public function getWokrersByLocation() {
         $url = env('BASE_API_URL') . "by_location/testing";
@@ -28,10 +35,11 @@ class APIController extends Controller
         foreach($result as $items){
             $location =  $items['location'];
             foreach($items['devices'] as $a){
+                $timestamp = $a['timestamp'];
                 $data[] = [
                     'worker' => $a['device'],
                     'active_mins' => $a['active_mins'] ,
-                    'timestamp' => $a['timestamp'],
+                    'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
                     'location' => $location
                 ];
             }
