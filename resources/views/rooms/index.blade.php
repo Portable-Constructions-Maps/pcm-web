@@ -17,18 +17,33 @@
   <div class="section-body">
     <br>
       <div class="row">
-        @foreach ($rooms as $key => $item)
+        @foreach ($rooms as $item)
         <div class="col-lg-3 col-md-6 col-sm-6 col-12">
           <div class="card card-statistic-1">
-              <div class="card-icon bg-primary">
+              <div class="card-icon {{$item['is_danger'] ? 'bg-danger' : 'bg-primary' }}">
                  <i class="fas fa-map-pin"></i>
               </div>
               <div class="card-wrap">
                   <div class="card-header">
-                      <h4>Probability {{__(sprintf("%.1f", $item))}}</h4>
+                      <h4>Probability {{__(sprintf("%.1f", $item['probability']*100)."%")}}</h4>
                   </div>
                   <div class="card-body">
-                    {{__($key)}}
+                    {{__($item['name'])}}
+                  </div>
+                  <div class="card-footer text-right">
+                      @if($item['is_danger'])
+                        <form action="{{route('pcm.undanger')}}" method="post">
+                            @csrf
+                            <input type="hidden" value="{{__($item['name'])}}" name="room">
+                            <button type="submit" class="btn btn-primary">Undanger</button>
+                        </form>
+                      @else
+                        <form action="{{route('pcm.danger')}}" method="post">
+                            @csrf
+                            <input type="hidden" value="{{__($item['name'])}}" name="room">
+                            <button type="submit" class="btn btn-danger">Danger</button>
+                        </form>
+                      @endif
                   </div>
               </div>
           </div>

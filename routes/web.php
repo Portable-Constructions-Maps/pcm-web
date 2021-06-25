@@ -30,4 +30,7 @@ Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function(){
     Route::get('/by_location/json', 'APIController@getCountWorkerByLocation');
     Route::get('/calibrate','APIController@calibrate')->name('pcm.calibrate');
+    Route::post('/danger','RoomController@store')->name('pcm.danger');
+    Route::post('/undanger','RoomController@unDanger')->name('pcm.undanger');
+    Route::get('/danger/all','RoomController@showDangerRooms')->name('pcm.danger.all');
 });
