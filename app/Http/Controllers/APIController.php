@@ -15,10 +15,17 @@ class APIController extends Controller
      */
    
     public function calibrate(){
-        $url = env('BASE_API_URL') . "api/v1/calibrate/testing";
+        $url = env('BASE_API_URL') . "calibrate/testing";
         $result = Http::get($url)->json();
+        $data  = [
+            'data' => $result
+        ];
+        if($result['success']){
+            return redirect()->back()->with('success', 'Berhasil Kalibrasi');
+        }else {
+            return redirect()->back()->with('error', 'Gagal Kalibrasi');
+        }
 
-        return $result;
     }
     public function getWokrersByLocation() {
         $url = env('BASE_API_URL') . "by_location/testing";
