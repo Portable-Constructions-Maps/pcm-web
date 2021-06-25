@@ -61,7 +61,7 @@
     });
 @endif
 @if(Session::has('error'))
-    tiziToast.error({
+    iziToast.error({
         title: 'Gagal',
         message: 'Gagal melakukan kalibrasi !',
         position: 'topRight'
