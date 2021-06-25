@@ -23,10 +23,20 @@
             @endif
             @if(session()->has('status'))
             <div class="alert alert-info">
-                {{ session()->get('status') }}
+                {{ session()->get('st atus') }}
             </div>
             @endif
             @yield('content')
+            @if(Route::is('login'))
+            <div class="mt-5 text-muted text-center">
+                Don't have an account? <a href="{{ route('register') }}">Create One</a>
+              </div>
+            @endif
+            @if(Route::is('register'))
+            <div class="mt-5 text-muted text-center">
+                Have an account? <a href="{{ route('login') }}">Login</a>
+              </div>
+              @endif
             <div class="simple-footer">
               Copyright &copy; {{ config('app.name') }} {{ date('Y') }}
             </div>
@@ -35,6 +45,7 @@
       </div>
     </section>
   </div>
+
   <script src="{{ mix('js/manifest.js') }}"></script>
   <script src="{{ mix('js/vendor.js') }}"></script>
   <script src="{{ mix('js/app.js') }}"></script>
