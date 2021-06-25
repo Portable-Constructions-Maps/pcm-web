@@ -25,7 +25,7 @@
               </div>
               <div class="card-wrap">
                   <div class="card-header">
-                      <h4>Prob {{__($item)}}</h4>
+                      <h4>Probability {{__(sprintf("%.1f", $item))}}</h4>
                   </div>
                   <div class="card-body">
                     {{__($key)}}
