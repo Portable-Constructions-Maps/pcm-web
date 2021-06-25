@@ -75,6 +75,7 @@ function getWorker(){
       {"data": "index"},
       {"data" : "worker"},
       {"data" : "location"},
+      {"data" : "probability"},
       {"data" : "active_mins"},
       {"data" : "timestamp"}
     ]
