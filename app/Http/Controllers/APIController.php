@@ -15,7 +15,7 @@ class APIController extends Controller
      */
    
     public function calibrate(){
-        $url = env('BASE_API_URL') . "calibrate/testing";
+        $url = "http://34.70.96.106:8005/api/v1/calibrate/testing";
         $result = Http::get($url)->json();
         $data  = [
             'data' => $result
@@ -28,7 +28,7 @@ class APIController extends Controller
 
     }
     public function getWokrersByLocation() {
-        $url = env('BASE_API_URL') . "by_location/testing";
+        $url = "http://34.70.96.106:8005/api/v1/by_location/testing";
         $request = Http::get($url)->json();
         $result = $request['locations'];
         $data = [];
