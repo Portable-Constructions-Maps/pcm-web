@@ -21,12 +21,26 @@
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
+function getWorkerByLocation(){
+  var hostApi = "http://10.50.0.20:8000/api/by_location/json";
+  $.ajax({
+    url: hostApi,
+    method : "GET",
+    type : "json",
+    success : function(data){
+      // array.forEach(element => {
+      //   console.log(data[element])
+      // });
+      console.log(data)
+    }
+  })
+}
 function getWorker(){
-  var hostApi = "http://localhost:8000/worker/show/json";
+  var hostApi = "http://10.50.0.20:8000/worker/show/json";
   var i = 1;
   var table = $("#tworker").DataTable({
     ajax : {
-      url : "http://localhost:8000/worker/show/json", 
+      url : hostApi, 
       dataSrc : (json) => {
         return json.data.map((row, index) => {
           row.index = index + 1
@@ -46,6 +60,7 @@ function getWorker(){
     table.ajax.reload()
   }, 1000)
 }
+getWorkerByLocation()
 getWorker()
 </script>
 @stack('javascript')
