@@ -32,6 +32,7 @@
 function getWorkerByLocation(){
   var hostApi = '{{route('api.rooms.by_location')}}';
   var card = document.getElementById("data_by_locations");
+  var bgDanger = "bg-danger"
   $.ajax({
     url: hostApi,
     method : "GET",
@@ -39,11 +40,14 @@ function getWorkerByLocation(){
     success : function(data){
       data.forEach(element => {
         console.log(element.locations)
+        if(!element.is_danger){
+          bgDanger = "bg-primary"
+        }
         card.innerHTML = (
           " <div class='row'>" +
             "<div class='col-lg-3 col-md-6 col-sm-6 col-12'>"+
              " <div class='card card-statistic-1'>"+
-                  "<div class='card-icon bg-primary'>"+
+                  "<div class='card-icon "+bgDanger+"'>"+
                      "<i class='far fa-user'></i>"+
                  " </div>"+
                  " <div class='card-wrap'>"+

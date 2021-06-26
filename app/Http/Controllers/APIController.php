@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
+use App\Room;
 
 class APIController extends Controller
 {
@@ -51,13 +52,22 @@ class APIController extends Controller
         $url = "http://34.70.96.106:8005/api/v1/by_location/testing";
         $request = Http::get($url)->json();
         $location = $request['locations'];
+        $dangerRooms = Room::all();
+
         $data = [];
         foreach($location as $items){
+            $isDanger = false;
+            foreach($dangerRooms as $dr){
+                if($items['location'] == $dr->name && $dr->is_danger == 1){
+                    $isDanger = true;
+                }
+            }
             $location =  $items['location'];
             $count = $items['total'];
                 $data[] = [
                     'locations' => $location,
-                    'total' => $count
+                    'total' => $count,
+                    'is_danger' => $isDanger
                 ];
         }
         $result  = [
