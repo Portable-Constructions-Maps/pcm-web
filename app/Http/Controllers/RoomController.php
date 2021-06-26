@@ -41,7 +41,11 @@ class RoomController extends Controller
         
         $room->is_danger = false;
         $room->update();
-        return redirect()->back();
+        if($room){
+            return redirect()->back()->with('success', 'Berhasil menghapus area berbahaya');
+        }else {
+            return redirect()->back()->with('error', 'Gagal menghapus area berbahaya');
+        }
         // return json_encode([
         //     'data' => $room,
         //     'status' => 'success'
@@ -66,7 +70,7 @@ class RoomController extends Controller
             $room = Room::where('name',$roomName)->first();
             $room->is_danger=1;
             $room->update();
-            if($room['success']){
+            if($room){
                 return redirect()->back()->with('success', 'Berhasil Kalibrasi');
             }else {
                 return redirect()->back()->with('error', 'Gagal Kalibrasi');

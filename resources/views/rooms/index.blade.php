@@ -90,14 +90,14 @@
 @if(Session::has('success'))
     iziToast.success({
         title: 'Sukses',
-        message: 'Berhasil !',
+        message: {{__(Session::get('success'))}},
         position: 'topRight'
     });
 @endif
 @if(Session::has('error'))
     iziToast.error({
         title: 'Gagal',
-        message: 'Gagal melakukan aksi !',
+        message: {{__(Session::get('error'))}} ,
         position: 'topRight'
     });
 @endif
