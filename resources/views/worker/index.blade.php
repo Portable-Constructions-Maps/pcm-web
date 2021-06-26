@@ -19,19 +19,11 @@
                 <th>#</th>
                 <th>Nama</th>
                 <th>Lokasi</th>
+                <th>Probability</th>
                 <th>Aktif(min)</th>
                 <th>Waktu</th>
               </tr>
               </thead>
-              <tfoot>
-                <tr>
-                  <th>#</th>
-                    <th>Nama</th>
-                    <th>Lokasi</th>
-                    <th>Aktif(min)</th>
-                    <th>Waktu</th>
-                  </tr>
-              </tfoot>
             </table>
           </div>
         </div>
