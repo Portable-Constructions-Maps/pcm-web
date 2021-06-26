@@ -26,22 +26,38 @@
               <div class="card-wrap">
                   <div class="card-header">
                       <h4>Probability {{__(sprintf("%.1f", $item['probability']*100)."%")}}</h4>
+
                   </div>
                   <div class="card-body">
                     {{__($item['name'])}}
                   </div>
+
                   <div class="card-footer text-right">
+
                       @if($item['is_danger'])
                         <form action="{{route('pcm.undanger')}}" method="post">
                             @csrf
-                            <input type="hidden" value="{{__($item['name'])}}" name="room">
-                            <button type="submit" class="btn btn-primary">Undanger</button>
+                          <div class="custom-control custom-switch">
+                              <input type="checkbox" id="customSwitch{{ $item['name'] }}" class="custom-control-input" name="room" onChange="this.form.submit()" {{ $item['is_danger'] ? 'checked' : '' }}>
+                              <label class="custom-control-label" for="customSwitch{{ $item['name'] }}">
+                                @if ($item['is_danger']!=0)
+                                Berbahaya
+                                @else
+                                Aman
+                              @endif</label>
+                          </div>
                         </form>
                       @else
                         <form action="{{route('pcm.danger')}}" method="post">
                             @csrf
-                            <input type="hidden" value="{{__($item['name'])}}" name="room">
-                            <button type="submit" class="btn btn-danger">Danger</button>
+                          <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch{{ $item['name'] }}" name="room" onChange="this.form.submit()" {{ $item['is_danger'] ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="customSwitch{{ $item['name'] }}"> @if ($item['is_danger']!=0)
+                                Berbahaya
+                                @else
+                                Aman
+                              @endif</label></label>
+                          </div>
                         </form>
                       @endif
                   </div>
@@ -68,6 +84,7 @@
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 <script>
+    var hostApi = "http://10.50.0.11:8000/danger";
 @if(Session::has('success'))
     iziToast.success({
         title: 'Sukses',

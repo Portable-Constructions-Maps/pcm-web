@@ -39,12 +39,12 @@ class RoomController extends Controller
         $room = Room::where('name',$roomName)->first();
         $room->is_danger = 0;
         $room->update();
+        return redirect()->back();
+        // return json_encode([
+        //     'data' => $room,
+        //     'status' => 'success'
+        // ]);
 
-        return json_encode([
-            'data' => $room,
-            'status' => 'success'
-        ]);
-        
     }
     public function store(Request $room)
     {
@@ -55,17 +55,30 @@ class RoomController extends Controller
             $newRoom->name = $roomName;
             $newRoom->is_danger = 1;
             $newRoom->save();
-            return json_encode(
-                [
-                    'data' => $newRoom,
-                    'success' => true
-                ]);
+            if($newRoom['success']){
+                return redirect()->back()->with('success', 'Berhasil Kalibrasi');
+            }else {
+                return redirect()->back()->with('error', 'Gagal Kalibrasi');
+            }
+            // return json_encode(
+            //     [
+            //         'data' => $newRoom,
+            //         'success' => true
+            //     ]);
         }else {
-            return json_encode(
-                [
-                    'data' => $rooms,
-                    'success' => true
-                ]);
+            $room = Room::where('name',$roomName)->first();
+            $room->is_danger=1;
+            $room->update();
+            if($room['success']){
+                return redirect()->back()->with('success', 'Berhasil Kalibrasi');
+            }else {
+                return redirect()->back()->with('error', 'Gagal Kalibrasi');
+            }
+            // return json_encode(
+            //     [
+            //         'data' => $rooms,
+            //         'success' => true
+            //     ]);
         }
     }
     public function showDangerRooms(){

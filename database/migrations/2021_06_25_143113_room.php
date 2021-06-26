@@ -12,11 +12,12 @@ class Room extends Migration
      * @return void
      */
     public function up()
-    { 
+    {
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->boolean('is_danger');
+            $table->timestamps();
         });
     }
 
