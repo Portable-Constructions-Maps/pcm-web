@@ -30,7 +30,7 @@
 
 <script type="text/javascript">
 function getWorkerByLocation(){
-  var hostApi = "http://localhost:8000/api/by_location/json";
+  var hostApi = '{{route('api.rooms.by_location')}}';
   var card = document.getElementById("data_by_locations");
   $.ajax({
     url: hostApi,
@@ -61,7 +61,7 @@ function getWorkerByLocation(){
   })
 }
 function getWorker(){
-  var hostApi = "http://localhost:8000/worker/show/json";
+  var hostApi = '{{route('worker.show.json')}}';
   var i = 1;
   var table = $("#tworker").DataTable({
     ajax : {

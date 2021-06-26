@@ -26,7 +26,7 @@ class WorkerController extends Controller
                 $data[] = [
                     'worker' => $a['device'],
                     'active_mins' => $a['active_mins'] ,
-                    'probability' => $a['probability'],
+                    'probability' => $a['probability'] * 100 . '%',
                     'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
                     'location' => $location
                 ];
