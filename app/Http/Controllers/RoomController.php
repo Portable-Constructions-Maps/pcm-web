@@ -35,9 +35,11 @@ class RoomController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function unDanger(Request $request){
+        //dd($request);
         $roomName  = $request['room'];
         $room = Room::where('name',$roomName)->first();
-        $room->is_danger = 0;
+        
+        $room->is_danger = false;
         $room->update();
         return redirect()->back();
         // return json_encode([
@@ -55,16 +57,11 @@ class RoomController extends Controller
             $newRoom->name = $roomName;
             $newRoom->is_danger = 1;
             $newRoom->save();
-            if($newRoom['success']){
-                return redirect()->back()->with('success', 'Berhasil Kalibrasi');
+            if($newRoom){
+                return redirect()->back()->with('success', 'Berhasil menambahkan area berbahaya');
             }else {
-                return redirect()->back()->with('error', 'Gagal Kalibrasi');
+                return redirect()->back()->with('error', 'Gagal menambahkan area berbahaya');
             }
-            // return json_encode(
-            //     [
-            //         'data' => $newRoom,
-            //         'success' => true
-            //     ]);
         }else {
             $room = Room::where('name',$roomName)->first();
             $room->is_danger=1;

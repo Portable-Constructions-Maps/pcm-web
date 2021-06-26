@@ -38,9 +38,10 @@
                         <form action="{{route('pcm.undanger')}}" method="post">
                             @csrf
                           <div class="custom-control custom-switch">
-                              <input type="checkbox" id="customSwitch{{ $item['name'] }}" class="custom-control-input" name="room" onChange="this.form.submit()" {{ $item['is_danger'] ? 'checked' : '' }}>
+                              <input type="checkbox" value="{{$item['name']}}" id="customSwitch{{ $item['name'] }}" class="custom-control-input" name="room" onChange="this.form.submit()" {{ $item['is_danger'] ? 'checked' : '' }}>
+                              <input type="hidden" value="{{$item['name']}}" name="room">
                               <label class="custom-control-label" for="customSwitch{{ $item['name'] }}">
-                                @if ($item['is_danger']!=0)
+                                @if ($item['is_danger'])
                                 Berbahaya
                                 @else
                                 Aman
@@ -51,8 +52,9 @@
                         <form action="{{route('pcm.danger')}}" method="post">
                             @csrf
                           <div class="custom-control custom-switch">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch{{ $item['name'] }}" name="room" onChange="this.form.submit()" {{ $item['is_danger'] ? 'checked' : '' }}>
-                            <label class="custom-control-label" for="customSwitch{{ $item['name'] }}"> @if ($item['is_danger']!=0)
+                            <input type="checkbox" value="{{$item['name']}}" class="custom-control-input" id="customSwitch{{ $item['name'] }}" name="room" onChange="this.form.submit()" {{ $item['is_danger'] ? 'checked' : '' }}>
+                            <label class="custom-control-label" for="customSwitch{{ $item['name'] }}"> 
+                                @if ($item['is_danger'])
                                 Berbahaya
                                 @else
                                 Aman
@@ -84,18 +86,18 @@
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 <script>
-    var hostApi = "http://10.50.0.11:8000/danger";
+    var hostApi = "http:/localhost:8000/danger";
 @if(Session::has('success'))
     iziToast.success({
         title: 'Sukses',
-        message: 'Berhasil kalibrasi !',
+        message: 'Berhasil !',
         position: 'topRight'
     });
 @endif
 @if(Session::has('error'))
     iziToast.error({
         title: 'Gagal',
-        message: 'Gagal melakukan kalibrasi !',
+        message: 'Gagal melakukan aksi !',
         position: 'topRight'
     });
 @endif
