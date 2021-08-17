@@ -31,7 +31,7 @@ class HomeController extends Controller
         return view('home');
     }
     public function room(){
-        $url = "http://34.70.96.106:8005/api/v1/efficacy/testing";
+        $url = getBaseUrl()."api/v1/efficacy/". getOrg();
         $request = Http::get($url)->json();
         $result = $request['efficacy'];
         $rooms = $result['accuracy_breakdown'];

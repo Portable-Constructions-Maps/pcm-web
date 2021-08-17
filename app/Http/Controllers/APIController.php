@@ -16,7 +16,7 @@ class APIController extends Controller
      */
    
     public function calibrate(){
-        $url = getBaseUrl(). "api/v1/calibrate/testing";
+        $url = getBaseUrl(). "api/v1/calibrate/". getOrg();
         $result = Http::get($url)->json();
         $data  = [
             'data' => $result
@@ -29,7 +29,7 @@ class APIController extends Controller
 
     }
     public function getWokrersByLocation() {
-        $url = getBaseUrl()."api/v1/by_location/testing";
+        $url = getBaseUrl()."api/v1/by_location/". getOrg();
         $request = Http::get($url)->json();
         $result = $request['locations'];
         $data = [];
@@ -49,7 +49,7 @@ class APIController extends Controller
         return $worker;
     }
     public function getCountWorkerByLocation(){
-        $url = getBaseUrl()."api/v1/by_location/testing";
+        $url = getBaseUrl()."api/v1/by_location/". getOrg();
         $request = Http::get($url)->json();
         $location = $request['locations'];
         $dangerRooms = Room::all();

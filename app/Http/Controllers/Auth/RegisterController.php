@@ -70,7 +70,7 @@ class RegisterController extends Controller
         $orgname = preg_replace('/\s+/', '-', $orgname);
         // convert the string to all lowercase
         $orgname = strtolower($orgname);
-        
+        createOrg($orgname);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

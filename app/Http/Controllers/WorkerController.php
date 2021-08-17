@@ -15,7 +15,7 @@ class WorkerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getWorker(){
-        $url = getBaseUrl() . "api/v1/by_location/testing";
+        $url = getBaseUrl() . "api/v1/by_location/". getOrg();
         $request = Http::get($url)->json();
         $result = $request['locations'];
         $data = [];
@@ -39,7 +39,7 @@ class WorkerController extends Controller
    
     public function index()
     {
-       
+        //dd(createOrg(getOrg()));
         return view('worker.index');
     }
 
