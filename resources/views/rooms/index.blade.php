@@ -25,7 +25,7 @@
               </div>
               <div class="card-wrap">
                   <div class="card-header">
-                      <h4>Probability {{__(sprintf("%.1f", $item['probability']*100)."%")}}</h4>
+                      <h4>Accuracy {{__(sprintf("%.1f", $item['probability']*100)."%")}}</h4>
 
                   </div>
                   <div class="card-body">

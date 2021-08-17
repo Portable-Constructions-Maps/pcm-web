@@ -39,7 +39,7 @@ class WorkerController extends Controller
    
     public function index()
     {
-    
+        dd(getBaseUrl());
         return view('worker.index');
     }
 
