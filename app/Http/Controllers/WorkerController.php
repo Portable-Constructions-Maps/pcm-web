@@ -15,7 +15,7 @@ class WorkerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function getWorker(){
-        $url = "http://34.70.96.106:8005/api/v1/by_location/testing";
+        $url = getBaseUrl() . "api/v1/by_location/testing";
         $request = Http::get($url)->json();
         $result = $request['locations'];
         $data = [];
@@ -39,7 +39,7 @@ class WorkerController extends Controller
    
     public function index()
     {
-        dd(getBaseUrl());
+       
         return view('worker.index');
     }
 
