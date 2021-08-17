@@ -100,7 +100,18 @@
                           <div class="invalid-feedback">
                           </div>
                         </div>
-
+                        <div class="row">
+                            <div class="form-group col-12">
+                              <label for="org">Organization</label>
+                              <input id="org" type="text" class="form-control @error('org') is-invalid @enderror" name="org" value="{{ old('org') }}" required autocomplete="org" autofocus>
+  
+                              @error('org')
+                                  <span class="invalid-feedback" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                  </span>
+                              @enderror
+                            </div>
+                          </div>
                         <div class="row">
                           <div class="form-group col-6">
                             <label for="password" class="d-block">Password</label>
