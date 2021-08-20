@@ -38,3 +38,29 @@ function createOrg($org){
         // 'body' => json_encode($data)
     ]);
 }
+function createArea($area, $org){
+  $url = getBaseUrl(). 'data';
+    $data = array (
+        'd' => $org,
+        'f' => $org,
+        'l' => $area,
+        's' => 
+        array (
+          'bluetooth' => 
+          array (
+            '' => '',
+          ),
+          'wifi' => 
+          array (
+            '' => '',
+          ),
+        ),
+    );
+    $client = new Client();
+    //return $data;
+    return $client->request('POST', $url, [
+        'json' => $data,
+        // 'headers' => ['Content-Type' => 'application/json', 'Accept' => 'application/json'],
+        // 'body' => json_encode($data)
+    ]);
+}

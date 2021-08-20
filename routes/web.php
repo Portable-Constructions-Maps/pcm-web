@@ -26,9 +26,10 @@ Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
     Route::get('/show', 'WorkerController@index')->name('worker.show');
     Route::get('/show/json', 'WorkerController@getWorker')->name('worker.show.json');
     Route::get('/rooms', 'HomeController@room')->name('worker.rooms');
+    Route::post('/rooms', 'RoomController@createArea')->name('worker.rooms.store');
 });
 Route::group(['prefix' => 'location', 'middleware' => 'auth'], function() {
-   Route::get('/show', 'LocationController@index')->name('locations.index');
+   Route::get('/show', 'LocationController@createArea')->name('locations.index');
 });
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function(){
     Route::get('/by_location/json', 'APIController@getCountWorkerByLocation')->name('api.rooms.by_location');

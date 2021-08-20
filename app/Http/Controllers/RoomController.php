@@ -52,6 +52,18 @@ class RoomController extends Controller
         // ]);
 
     }
+    public function createArea(Request $request){
+        $room    = $request->room;
+        $orgname = getOrg();
+        $createRoom = Room::create([
+            'name' => $request->name,
+            'is_danger' => 0
+        ]);
+        if($createRoom){
+            createRoom($room,$orgname);
+        }
+        return redirect()->back()->with('success','Berhasil');
+    }
     public function store(Request $room)
     {
         $rooms = Room::where('name',$room['room'])->first();

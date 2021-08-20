@@ -12,7 +12,11 @@
           <!-- <div class="breadcrumb-item">Page</div> -->
       </div>
   </div>
-  
+  <button class="btn btn-primary trigger--fire-modal-2" id="fire-modal-2">Tambah Area</button>
+  Note : 
+
+  fornm input name =room
+  method post action = route "worker.rooms.store"
   @if($status)
   Kalibrasi terakhir : <b>{{__($calibrated)}}</b> &nbsp; <a href="{{route('pcm.calibrate')}}" class="btn btn-success" id="btnCalibrate">Calibrate Now</a>
   <div class="section-body">
@@ -106,4 +110,18 @@
     });
 @endif
 </script>
+<div class="modal fade" tabindex="-1" role="dialog" id="fire-modal-2" style="display: block; padding-right: 15px;">       
+  <div class="modal-dialog modal-md modal-dialog-centered" role="document">         
+    <div class="modal-content">           
+      <div class="modal-header">            
+         <h5 class="modal-title">Tambah Area</h5>             
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">               
+           <span aria-hidden="true">×</span>             
+          </button>           
+        </div>           
+        <div class="modal-body"> </div>         
+
+      </div>       
+    </div>    
+  </div>
 @endsection
