@@ -27,8 +27,15 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        return view('home');
+        if(auth()->user()->org == null){
+            return view('setup.index');
+        }else {
+            return view('home');
+        }
+      
+    }
+    public function worker(){
+        return view('worker.add');
     }
     public function room(){
         $url = getBaseUrl()."api/v1/efficacy/". getOrg();

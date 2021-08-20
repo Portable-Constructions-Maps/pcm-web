@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+use App\Worker;
 
 class WorkerController extends Controller
 {
@@ -14,6 +15,7 @@ class WorkerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function getWorker(){
         $url = getBaseUrl() . "api/v1/by_location/". getOrg();
         $request = Http::get($url)->json();
@@ -33,14 +35,15 @@ class WorkerController extends Controller
             }
         }
         $worker = ['data' => $data];
-            
+        
         return $worker;
     }
    
     public function index()
     {
         //dd(createOrg(getOrg()));
-        return view('worker.index');
+        //return dd(getDevices());
+        return view('worker.index')->with('workers', getDevices());
     }
 
     /**
@@ -61,7 +64,29 @@ class WorkerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = $request->name;
+        $uuid  =$request->uuid;
+        $getOrg =  explode('-', $request->uuid);
+        $org = getOrg();
+        $status = $getOrg[0]==$org? true :false;
+        $data = [
+            'name' => $name,
+            'organization' => getOrg(),
+            'device_id' => $uuid,
+            'status' => $status
+        ];
+        if($status){
+            $worker = Worker::create([
+                'name' => $name,
+                'uuid' => $uuid,
+                'org' => getOrg(),
+            ]);
+            if($worker){
+                createDevice($uuid, getOrg());
+                return redirect()->back()->with('message','Berhasil menambahkan device');
+            }
+        }return redirect()->back()->with('message','Device tidak terdaftar di organisasi ini');
+        
     }
 
     /**

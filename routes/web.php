@@ -14,12 +14,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return redirect('login');
+    return redirect('/home');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'setup', 'middleware' => 'auth'], function() {
+    Route::post('/post', 'SetupController@store')->name('setup.store');
+ });
 
 //worker
 Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
@@ -27,6 +31,7 @@ Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
     Route::get('/show/json', 'WorkerController@getWorker')->name('worker.show.json');
     Route::get('/rooms', 'HomeController@room')->name('worker.rooms');
     Route::post('/rooms', 'RoomController@createArea')->name('worker.rooms.store');
+    Route::post('/add','WorkerController@store')->name('worker.store');
 });
 Route::group(['prefix' => 'location', 'middleware' => 'auth'], function() {
    Route::get('/show', 'LocationController@createArea')->name('locations.index');

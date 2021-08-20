@@ -27,7 +27,24 @@
 <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script> --}}
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
+<script>
+    var hostApi = "http:/localhost:8000/danger";
+@if(Session::has('success'))
+    iziToast.success({
+        title: 'Sukses',
+        message: {{__(Session::get('success'))}},
+        position: 'topRight'
+    });
+@endif
+@if(Session::has('error'))
+    iziToast.error({
+        title: 'Gagal',
+        message: {{__(Session::get('error'))}} ,
+        position: 'topRight'
+    });
+@endif
+</script>
 <script type="text/javascript">
 function getWorkerByLocation(){
   var hostApi = '{{route('api.rooms.by_location')}}';
