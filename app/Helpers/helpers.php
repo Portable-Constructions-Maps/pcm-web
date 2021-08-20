@@ -3,7 +3,10 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 
 function getBaseUrl() {
-    return "http://34.70.96.106:8005/" ;
+  //local
+  return "http://10.50.0.31:8005/";
+  //production
+  //return "http://34.70.96.106:8005/" ;
 }
 
 function getOrg(){

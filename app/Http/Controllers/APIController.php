@@ -46,7 +46,10 @@ class APIController extends Controller
             }
         }
         $worker = ['data' => $data];
-        return $worker;
+        if($worker!==null){
+            return $worker;
+        }
+        
     }
     public function getCountWorkerByLocation(){
         $url = getBaseUrl()."api/v1/by_location/". getOrg();

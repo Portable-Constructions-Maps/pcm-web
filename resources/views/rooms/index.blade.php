@@ -12,8 +12,9 @@
           <!-- <div class="breadcrumb-item">Page</div> -->
       </div>
   </div>
+  
+  @if($status)
   Kalibrasi terakhir : <b>{{__($calibrated)}}</b> &nbsp; <a href="{{route('pcm.calibrate')}}" class="btn btn-success" id="btnCalibrate">Calibrate Now</a>
-
   <div class="section-body">
     <br>
       <div class="row">
@@ -83,6 +84,9 @@
           </div>
       </div> --}}
   </div>
+  @else
+  Kalibrasi terakhir : <b>Belum ada area</b> &nbsp; <a href="{{route('pcm.calibrate')}}" class="btn btn-success" id="btnCalibrate">Calibrate Now</a>
+  @endif
 </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
 <script>

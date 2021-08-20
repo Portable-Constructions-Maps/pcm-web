@@ -33,28 +33,38 @@ class HomeController extends Controller
     public function room(){
         $url = getBaseUrl()."api/v1/efficacy/". getOrg();
         $request = Http::get($url)->json();
-        $result = $request['efficacy'];
-        $rooms = $result['accuracy_breakdown'];
-        $timestamp = $result['last_calibration_time'];
-        $lastCalibrate =  Carbon::createFromTimestamp($timestamp)->diffForHumans();
+        //dd($request);
+        if($request['success'] == true){
+            $status = true;
+            dd($request);
+            $result = $request['efficacy'];
+            $rooms = $result['accuracy_breakdown'];
+            $timestamp = $result['last_calibration_time'];
+            $lastCalibrate =  Carbon::createFromTimestamp($timestamp)->diffForHumans();
 
-        $dangerRooms = Room::all();
-        foreach($rooms as $room => $key){
-            $isDanger = false;
-            foreach($dangerRooms as $dr){
-                if($room == $dr->name && $dr->is_danger == 1){
-                    $isDanger = true;
+            $dangerRooms = Room::all();
+            foreach($rooms as $room => $key){
+                $isDanger = false;
+                foreach($dangerRooms as $dr){
+                    if($room == $dr->name && $dr->is_danger == 1){
+                        $isDanger = true;
+                    }
                 }
+                $allRoom[] = [
+                    'name' => $room,
+                    'probability' => $key,
+                    'is_danger' => $isDanger
+                ];
             }
-            $allRoom[] = [
-                'name' => $room,
-                'probability' => $key,
-                'is_danger' => $isDanger
-            ];
-        }
-        //dd($allRoom);
-        return view('rooms.index')
+            return view('rooms.index')
             ->with('calibrated',$lastCalibrate)
             ->with('rooms', $allRoom);
+    
+        }else{
+            $status = false;
+            return view('rooms.index')->with('status',$status);
+        }
+            //dd($allRoom);
+           
     }
 }
