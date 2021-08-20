@@ -70,6 +70,7 @@ function getWorker(){
   var table = $("#tworker").DataTable({
     ajax : {
       url : hostApi,
+      type: POST,
       dataSrc : (json) => {
         return json.data.map((row, index) => {
           row.index = index + 1
