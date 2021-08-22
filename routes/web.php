@@ -26,16 +26,18 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth'], function() {
     Route::post('/post', 'SetupController@store')->name('setup.store');
  });
 
-//worker
+//workers
 Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
     Route::get('/show', 'WorkerController@index')->name('worker.show');
     Route::get('/show/json', 'WorkerController@getWorker')->name('worker.show.json');
     Route::post('/add','WorkerController@store')->name('worker.store');
 });
+//monitor
 Route::group(['prefix' => 'monitor', 'middleware' => 'auth'], function() {
    Route::get('/show', 'MonitorController@index')->name('monitor.index');
    Route::post('/send', 'MonitorController@send')->name('monitor.store');
 });
+//location
 Route::group(['prefix' => 'locations', 'middleware' => 'auth'], function() {
     Route::get('/show', 'LocationController@index')->name('locations.index');
     Route::post('/store', 'LocationController@store')->name('locations.store');

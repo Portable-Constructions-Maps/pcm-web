@@ -4,6 +4,13 @@ use GuzzleHttp\Client;
 use App\Worker;
 use Carbon\Carbon;
 
+function setResponse($data, $status, $message) {
+  return $data = [
+    "status" => $status,
+    "message" => $message,
+    "data" => $data,
+  ];
+}
 function getBaseUrl() {
   //local
   //return "http://10.50.0.31:8005/";
@@ -166,28 +173,35 @@ function publishMqtt($org, $device, $status){
 }
 function getDevicesByLocation($org) {
     $url = getBaseUrl()."api/v1/by_location/".$org;
-    $request = Http::get($url)->json();
-    //return $request;
-    $head = $request['locations'];
-    foreach($head as $items){
-      $location =  $items['location'];
-      foreach($items['devices'] as $a){
-          $timestamp = $a['timestamp'];
-          $data[] = [
-                'worker' => $a['device'],
-                'active_mins' => $a['active_mins'] ,
-                'probability' => $a['probability'],
-                'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
-                'first_seen' => $a['first_seen'],
-                'active_mins' => $a['active_mins'],
-                'location' => $location
-            ];
-        }
+    try{
+      $request = Http::get($url)->json();
+      //return $request;
+      $data = null; 
+      $head = $request['locations'];
+      foreach($head as $items){
+        $location =  $items['location'];
+        foreach($items['devices'] as $a){
+            $timestamp = $a['timestamp'];
+            $data = [
+                  'worker' => $a['device'],
+                  'active_mins' => $a['active_mins'] ,
+                  'probability' => $a['probability'],
+                  'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
+                  'first_seen' => $a['first_seen'],
+                  'active_mins' => $a['active_mins'],
+                  'location' => $location
+              ];
+          }
+      }
+      return dd($data);
+      if($data != null) {
+        return setResponse(workersByLocation($data,'location'), true, "ada datanya guys");
+      } 
+      return setResponse("",false,"kosong");
+    }catch(\Exception $e){
+      return setResponse("",false,"CuRL Error : connection refused");
     }
-    $worker = ['data' => $data];
-    if($worker!==null){
-        return workersByLocation($data,'location');
-    }
+    
 }
 
 function workersByLocation($data, $key){
