@@ -47,14 +47,16 @@
               </tr>
               </thead>
               <tbody>
-                @foreach($workers as $worker)
-                  <tr>
-                    <td>{{$loop->iteration}}</td>
-                    <td>{{$worker['name']}}</td>
-                    <td>{{$worker['uuid']}}</td>
-                    <td></td>
-                  </tr>
-                @endforeach
+                @if($workers[0]!=null)
+                  @foreach($workers as $worker)
+                    <tr>
+                      <td>{{$loop->iteration}}</td>
+                      <td>{{$worker['name']}}</td>
+                      <td>{{$worker['uuid']}}</td>
+                      <td></td>
+                    </tr>
+                  @endforeach
+                @endif
               </tbody>
             </table>
           </div>

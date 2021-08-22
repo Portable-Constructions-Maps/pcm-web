@@ -17,7 +17,7 @@ class LocationController extends Controller
 
         return view('locations.index');
     }
-
+     
     /**
      * Show the form for creating a new resource.
      *
@@ -36,7 +36,17 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $name = $request->name;
+        $org  = getOrg();
+
+        $location = Location::create([
+            'name' => $name,
+            'is_danger' =>0,
+            'org' => $org
+        ]);
+
+        if()
+
     }
 
     /**

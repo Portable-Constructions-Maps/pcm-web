@@ -20,12 +20,12 @@ class WorkerController extends Controller
         $url = getBaseUrl() . "api/v1/by_location/". getOrg();
         $request = Http::get($url)->json();
         $result = $request['locations'];
-        $data = [];
+        
         foreach($result as $items){
             $location =  $items['location'];
             foreach($items['devices'] as $a){
                 $timestamp = $a['timestamp'];
-                $data[] = [
+                $data = [
                     'worker' => $a['device'],
                     'active_mins' => $a['active_mins'] ,
                     'probability' => $a['probability'] * 100 . '%',
@@ -35,7 +35,6 @@ class WorkerController extends Controller
             }
         }
         $worker = ['data' => $data];
-        
         return $worker;
     }
    
@@ -43,6 +42,7 @@ class WorkerController extends Controller
     {
         //dd(createOrg(getOrg()));
         //return dd(getDevices());
+
         return view('worker.index')->with('workers', getDevices());
     }
 
@@ -132,5 +132,12 @@ class WorkerController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function mqtt($org,$device,$status){
+        
+        return publishMqtt($org, $device, $status);
+    }
+    public function mqttTest(){
+        return publishMqttTest();
     }
 }

@@ -5,9 +5,9 @@ use App\Worker;
 
 function getBaseUrl() {
   //local
-  return "http://10.50.0.31:8005/";
+  //return "http://10.50.0.31:8005/";
   //production
-  //return "http://34.70.96.106:8005/" ;
+  return "http://35.202.62.247:8005/" ;
 }
 
 function getOrg(){
@@ -40,9 +40,10 @@ function createOrg($org){
     ]);
 }
 function createArea($area, $org){
+  $device = Device::where('org', $org)->first();
   $url = getBaseUrl(). 'data';
     $data = array (
-        'd' => $org,
+        'd' => $device->uuid,
         'f' => $org,
         'l' => $area,
         's' => 
@@ -96,6 +97,7 @@ function getDevices() {
   $host =  getBaseUrl(). "api/v1/devices/".getOrg();
   $request = Http::get($host)->json();
   $workers = Worker::all();
+  //$data[] = null;
   foreach ($workers as $worker) {
     foreach ($request['devices'] as $device) {
       if($device == $worker->uuid){
@@ -106,5 +108,45 @@ function getDevices() {
       }
     }
   }
+  //return dd($data);
   return $data;
+}
+ 
+function publishMqtt($org, $device, $status){
+  $buzz = $status == 1 ? true : false;
+  $data = [
+    "method" =>'setAlarmStatus',
+    "enabled" => $buzz 
+  ];
+  //dd('v1/'.$org.'/'.$device.'/request', json_encode($data), 0);
+  $server   = '35.202.62.247';
+  $port     = 1884;
+  $clientId = 'test-publisher';
+
+  $mqtt = new \PhpMqtt\Client\MqttClient($server, $port, $clientId);
+  $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
+        ->setUsername("admin")
+        ->setPassword("kasugawa");
+  $mqtt->connect($connectionSettings, true);
+  $mqtt->publish('v1/'.$org.'/'.$device.'/request', json_encode($data), 0);
+  $mqtt->disconnect();
+  //return dd($mqtt);
+}
+function publishMqttTest(){
+  $data = [
+    "method" =>'setAlarmStatus',
+    "enabled" => false 
+  ];
+  $server   = '35.202.62.247';
+  $port     = 1884;
+  $clientId = 'test-publisher';                 
+
+  $mqtt = new \PhpMqtt\Client\MqttClient($server, $port, $clientId);
+  $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
+        ->setUsername("admin")
+        ->setPassword("kasugawa");
+  $mqtt->connect($connectionSettings, true);
+  $mqtt->publish('v1/307a9eaa609/307a9eaa609-28a1656e-9df0-4c7c-af2c-cfdbc2613b5d/request', json_encode($data), 0);
+  $mqtt->disconnect();
+  return dd($mqtt);
 }

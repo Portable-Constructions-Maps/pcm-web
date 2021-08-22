@@ -22,6 +22,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'setup', 'middleware' => 'auth'], function() {
+    Route::get('/', 'SetupController@index')->name('setup.index');
     Route::post('/post', 'SetupController@store')->name('setup.store');
  });
 
@@ -29,14 +30,16 @@ Route::group(['prefix' => 'setup', 'middleware' => 'auth'], function() {
 Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
     Route::get('/show', 'WorkerController@index')->name('worker.show');
     Route::get('/show/json', 'WorkerController@getWorker')->name('worker.show.json');
-    Route::get('/rooms', 'HomeController@room')->name('worker.rooms');
-    Route::post('/rooms', 'RoomController@createArea')->name('worker.rooms.store');
     Route::post('/add','WorkerController@store')->name('worker.store');
 });
-Route::group(['prefix' => 'location', 'middleware' => 'auth'], function() {
-   Route::get('/show', 'LocationController@createArea')->name('locations.index');
+Route::group(['prefix' => 'locations', 'middleware' => 'auth'], function() {
+   Route::get('/show', 'LocationController@index')->name('locations.index');
+   Route::get('/store', 'LocationController@index')->name('locations.store');
 });
+
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function(){
+    Route::get('/mqtt/{org}/{device}/{status}','WorkerController@mqtt');
+    Route::get('/mqtt','WorkerController@mqttTest');
     Route::get('/by_location/json', 'APIController@getCountWorkerByLocation')->name('api.rooms.by_location');
     Route::get('/calibrate','APIController@calibrate')->name('pcm.calibrate');
     Route::post('/danger','RoomController@store')->name('pcm.danger');

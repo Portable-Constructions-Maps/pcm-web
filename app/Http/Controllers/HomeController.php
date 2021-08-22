@@ -28,7 +28,7 @@ class HomeController extends Controller
     public function index()
     {
         if(auth()->user()->org == null){
-            return view('setup.index');
+            return redirect()->route('setup.index');
         }else {
             return view('home');
         }
