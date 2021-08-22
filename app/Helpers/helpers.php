@@ -2,12 +2,22 @@
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Worker;
+use Carbon\Carbon;
 
 function getBaseUrl() {
   //local
   //return "http://10.50.0.31:8005/";
   //production
   return "http://35.202.62.247:8005/" ;
+}
+function mqtt(){
+  $data = array(
+    'server' => '35.202.62.247',
+    'port'=> 1884,
+    'username' => 'admin' ,
+    'password' => 'kasugawa'
+  );
+  return $data;
 }
 
 function getOrg(){
@@ -112,26 +122,7 @@ function getDevices() {
   return $data;
 }
  
-function publishMqtt($org, $device, $status){
-  $buzz = $status == 1 ? true : false;
-  $data = [
-    "method" =>'setAlarmStatus',
-    "enabled" => $buzz 
-  ];
-  //dd('v1/'.$org.'/'.$device.'/request', json_encode($data), 0);
-  $server   = '35.202.62.247';
-  $port     = 1884;
-  $clientId = 'test-publisher';
 
-  $mqtt = new \PhpMqtt\Client\MqttClient($server, $port, $clientId);
-  $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
-        ->setUsername("admin")
-        ->setPassword("kasugawa");
-  $mqtt->connect($connectionSettings, true);
-  $mqtt->publish('v1/'.$org.'/'.$device.'/request', json_encode($data), 0);
-  $mqtt->disconnect();
-  //return dd($mqtt);
-}
 function publishMqttTest(){
   $data = [
     "method" =>'setAlarmStatus',
@@ -149,4 +140,61 @@ function publishMqttTest(){
   $mqtt->publish('v1/307a9eaa609/307a9eaa609-28a1656e-9df0-4c7c-af2c-cfdbc2613b5d/request', json_encode($data), 0);
   $mqtt->disconnect();
   return dd($mqtt);
+}
+
+function publishMqtt($org, $device, $status){
+  $conf = mqtt();
+  //dd($conf);
+  $buzz = $status == 1 ? true : false;
+  $data = [
+    "method" =>'setAlarmStatus',
+    "enabled" => $buzz 
+  ];
+  //dd('v1/'.$org.'/'.$device.'/request', json_encode($data), 0);
+  $server   = $conf['server'];
+  $port     = $conf['port'];
+  $clientId = 'test-publisher';
+
+  $mqtt = new \PhpMqtt\Client\MqttClient($server, $port, $clientId);
+  $connectionSettings = (new \PhpMqtt\Client\ConnectionSettings)
+        ->setUsername($conf['username'])
+        ->setPassword($conf['password']);
+  $mqtt->connect($connectionSettings, true);
+  $mqtt->publish('v1/'.$org.'/'.$device.'/request', json_encode($data), 0);
+  $mqtt->disconnect();
+  //return dd($mqtt);
+}
+function getDevicesByLocation($org) {
+    $url = getBaseUrl()."api/v1/by_location/".$org;
+    $request = Http::get($url)->json();
+    //return $request;
+    $head = $request['locations'];
+    foreach($head as $items){
+      $location =  $items['location'];
+      foreach($items['devices'] as $a){
+          $timestamp = $a['timestamp'];
+          $data[] = [
+                'worker' => $a['device'],
+                'active_mins' => $a['active_mins'] ,
+                'probability' => $a['probability'],
+                'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
+                'first_seen' => $a['first_seen'],
+                'active_mins' => $a['active_mins'],
+                'location' => $location
+            ];
+        }
+    }
+    $worker = ['data' => $data];
+    if($worker!==null){
+        return workersByLocation($data,'location');
+    }
+}
+
+function workersByLocation($data, $key){
+  $return = array();
+  foreach($data as $val) {
+      $return[$val[$key]] = $val;
+      unset($return[$val[$key]][$key]);
+  }
+  return $return;
 }

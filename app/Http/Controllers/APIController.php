@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Room;
 
+
 class APIController extends Controller
 {
     /**
@@ -40,7 +41,10 @@ class APIController extends Controller
                 $data[] = [
                     'worker' => $a['device'],
                     'active_mins' => $a['active_mins'] ,
+                    'probability' => $a['probability'],
                     'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
+                    'first_seen' => $a['first_seen'],
+                    'active_mins' => $a['active_mins'],
                     'location' => $location
                 ];
             }

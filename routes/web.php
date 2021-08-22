@@ -32,11 +32,15 @@ Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
     Route::get('/show/json', 'WorkerController@getWorker')->name('worker.show.json');
     Route::post('/add','WorkerController@store')->name('worker.store');
 });
-Route::group(['prefix' => 'locations', 'middleware' => 'auth'], function() {
-   Route::get('/show', 'LocationController@index')->name('locations.index');
-   Route::post('/store', 'LocationController@store')->name('locations.store');
-   Route::post('/update', 'LocationController@setStatus')->name('locations.update');
+Route::group(['prefix' => 'monitor', 'middleware' => 'auth'], function() {
+   Route::get('/show', 'MonitorController@index')->name('monitor.index');
+   Route::post('/send', 'MonitorController@send')->name('monitor.store');
 });
+Route::group(['prefix' => 'locations', 'middleware' => 'auth'], function() {
+    Route::get('/show', 'LocationController@index')->name('locations.index');
+    Route::post('/store', 'LocationController@store')->name('locations.store');
+    Route::post('/update', 'LocationController@setStatus')->name('locations.update');
+ });
 
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function(){
     Route::get('/mqtt/{org}/{device}/{status}','WorkerController@mqtt');
