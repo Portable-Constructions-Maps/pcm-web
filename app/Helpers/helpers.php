@@ -40,7 +40,7 @@ function createOrg($org){
     ]);
 }
 function createArea($area, $org){
-  $device = Device::where('org', $org)->first();
+  $device = Worker::where('org', $org)->first();
   $url = getBaseUrl(). 'data';
     $data = array (
         'd' => $device->uuid,

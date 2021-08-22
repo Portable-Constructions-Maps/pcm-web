@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Location;
 
 class LocationController extends Controller
 {
@@ -14,8 +15,10 @@ class LocationController extends Controller
     public function index()
     {
         //
+        $locations = Location::where('org',getOrg())->get();
+        //return $locations;
 
-        return view('locations.index');
+        return view('locations.index')->with('locations', $locations);
     }
      
     /**
@@ -41,12 +44,29 @@ class LocationController extends Controller
 
         $location = Location::create([
             'name' => $name,
-            'is_danger' =>0,
+            'is_danger' => 0,
             'org' => $org
         ]);
-
-        if()
-
+        if($location){
+            createArea($name, $org);
+            //return dd('success');
+            return redirect()->back()->with('success','berhasil');
+        }else{
+            //return dd('failed');
+            return redirect()->back()->with('error','error');
+        }
+        
+    }
+    public function setStatus(Request $request) {
+        $id = $request->id;
+        $status = $request->status;
+        $locations = Location::find($id);
+        $locations->is_danger = $status;
+        $locations->save();
+        if($locations){
+            return redirect()->back()->with('success','oke');
+        }
+        return redirect()->back()->with('error','gagal!');
     }
 
     /**

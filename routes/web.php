@@ -34,7 +34,8 @@ Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
 });
 Route::group(['prefix' => 'locations', 'middleware' => 'auth'], function() {
    Route::get('/show', 'LocationController@index')->name('locations.index');
-   Route::get('/store', 'LocationController@index')->name('locations.store');
+   Route::post('/store', 'LocationController@store')->name('locations.store');
+   Route::post('/update', 'LocationController@setStatus')->name('locations.update');
 });
 
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function(){
