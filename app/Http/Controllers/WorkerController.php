@@ -37,7 +37,26 @@ class WorkerController extends Controller
         $worker = ['data' => $data];
         return $worker;
     }
-   
+    public function triggerWorker(Request $request){
+        $status = $request->status == 1 ? true : false;
+        $uuid =  $request->uuid;
+        $org  = getOrg();
+        $device =  Worker::where('uuid', $uuid)->first();
+        $device->is_trigger = $status;
+        $device->save();
+        if($device){
+            publishMqtt($org,$uuid, $status);
+            return redirect()->back()->with('success','Berhasil');
+        }else {
+            return redirect()->back()->with('error','Gagal');
+        }
+        // return $data = [
+        //     'uuid' => $uuid,
+        //     'org' => $org,
+        //     'status' => $status,
+        // ]; //
+
+    }
     public function index()
     {
         //dd(createOrg(getOrg()));
@@ -45,7 +64,7 @@ class WorkerController extends Controller
         $data   = getDevices();
         if($data!=null){
             $result=  setResponse($data,true,"berhasil");
-            return dd($result['data']);
+            //return dd($result['data']);
             return view('worker.index')->with('workers', $result);
           }else {
             $result=  setResponse($data,false,"gagal");

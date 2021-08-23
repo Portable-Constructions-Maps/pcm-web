@@ -53,7 +53,23 @@
                       <td>{{$loop->iteration}}</td>
                       <td>{{$worker['name']}}</td>
                       <td>{{$worker['uuid']}}</td>
-                      <td></td>
+                      <td>
+                        <form method="POST" action="{{route('worker.trigger')}}" class="needs-validation" novalidate="">
+                          @csrf
+                          @if($worker['is_trigger'])
+                            <input type="hidden" name="status" value="0">
+                            <input type="hidden" name="uuid" value="{{$worker['uuid']}}">
+                            <button name="submit" type="submit" class="btn btn-warning " tabindex="4">
+                                Alarm
+                            </button>
+                          @else 
+                            <input type="hidden" name="status" value="1">
+                            <input type="hidden" name="uuid" value="{{$worker['uuid']}}">
+                            <button name="submit" type="submit" class="btn btn-primary " tabindex="4">
+                                Release
+                          @endif
+                        </form>
+                      </td>
                     </tr>
                   @endforeach
                 @endif

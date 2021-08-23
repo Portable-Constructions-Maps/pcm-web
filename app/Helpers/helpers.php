@@ -15,7 +15,7 @@ function getBaseUrl() {
   //local
   //return "http://10.50.0.31:8005/";
   //production
-  return "http://35.202.62.247:8005/" ;
+  return "http://35.202.62.247:8006/" ;
 }
 function mqtt(){
   $data = array(
@@ -121,6 +121,7 @@ function getDevices() {
         $data[] = [
           'name' => $worker->name,
           'uuid' => $worker->uuid,
+          'is_trigger' => $worker->is_trigger,
         ];
       }
     }

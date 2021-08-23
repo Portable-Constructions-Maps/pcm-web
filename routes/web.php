@@ -31,6 +31,7 @@ Route::group(['prefix' => 'worker', 'middleware' => 'auth'], function() {
     Route::get('/show', 'WorkerController@index')->name('worker.show');
     Route::get('/show/json', 'WorkerController@getWorker')->name('worker.show.json');
     Route::post('/add','WorkerController@store')->name('worker.store');
+    Route::post('/trigger','WorkerController@triggerWorker')->name('worker.trigger');
 });
 //monitor
 Route::group(['prefix' => 'monitor', 'middleware' => 'auth'], function() {
