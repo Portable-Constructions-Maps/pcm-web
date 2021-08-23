@@ -21,9 +21,9 @@ function getBaseUrl() {
 function mqtt(){
   $data = array(
     'server' => '35.202.62.247',
-    'port'=> 1884,
+    'port'=> 1885,
     'username' => 'admin' ,
-    'password' => 'kasugawa'
+    'password' => 'password'
   );
   return $data;
 }
