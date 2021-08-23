@@ -42,8 +42,17 @@ class WorkerController extends Controller
     {
         //dd(createOrg(getOrg()));
         //return dd(getDevices());
-
-        return view('worker.index')->with('workers', getDevices());
+        $data   = getDevices();
+        if($data!=null){
+            $result=  setResponse($data,true,"berhasil");
+            return dd($result['data']);
+            return view('worker.index')->with('workers', $result);
+          }else {
+            $result=  setResponse($data,false,"gagal");
+            //return dd($result['status']);
+            return view('worker.index')->with('workers', $result);
+          }
+        
     }
 
     /**

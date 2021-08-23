@@ -47,8 +47,8 @@
               </tr>
               </thead>
               <tbody>
-                @if($workers[0]!=null)
-                  @foreach($workers as $worker)
+                @if($workers['status'])
+                  @foreach($workers['data'] as $worker)
                     <tr>
                       <td>{{$loop->iteration}}</td>
                       <td>{{$worker['name']}}</td>

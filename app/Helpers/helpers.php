@@ -114,7 +114,7 @@ function getDevices() {
   $host =  getBaseUrl(). "api/v1/devices/".getOrg();
   $request = Http::get($host)->json();
   $workers = Worker::all();
-  //$data[] = null;
+  $data = null;
   foreach ($workers as $worker) {
     foreach ($request['devices'] as $device) {
       if($device == $worker->uuid){
@@ -127,6 +127,7 @@ function getDevices() {
   }
   //return dd($data);
   return $data;
+
 }
  
 
@@ -182,7 +183,7 @@ function getDevicesByLocation($org) {
         $location =  $items['location'];
         foreach($items['devices'] as $a){
             $timestamp = $a['timestamp'];
-            $data = [
+            $data[] = [
                   'worker' => $a['device'],
                   'active_mins' => $a['active_mins'] ,
                   'probability' => $a['probability'],
@@ -193,13 +194,13 @@ function getDevicesByLocation($org) {
               ];
           }
       }
-      return dd($data);
+      //return dd($data);
       if($data != null) {
         return setResponse(workersByLocation($data,'location'), true, "ada datanya guys");
       } 
       return setResponse("",false,"kosong");
     }catch(\Exception $e){
-      return setResponse("",false,"CuRL Error : connection refused");
+      return setResponse("",false,"Error: connect ECONNREFUSED");
     }
     
 }
