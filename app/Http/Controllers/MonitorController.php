@@ -13,7 +13,8 @@ class MonitorController extends Controller
      */
     public function index()
     {
-        return getDevicesByLocation("testing");
+        return by_location(getOrg());
+        return getDevicesByLocation(getOrg());
     }
 
     /**

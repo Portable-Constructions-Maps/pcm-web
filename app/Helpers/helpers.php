@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client;
 use App\Worker;
 use Carbon\Carbon;
+use App\Location;
 
 function setResponse($data, $status, $message) {
   return $data = [
@@ -197,7 +198,7 @@ function getDevicesByLocation($org) {
       }
       //return dd($data);
       if($data != null) {
-        return setResponse(workersByLocation($data,'location'), true, "ada datanya guys");
+        return setResponse($data, true, "ada datanya guys");
       } 
       return setResponse("",false,"kosong");
     }catch(\Exception $e){
@@ -207,10 +208,58 @@ function getDevicesByLocation($org) {
 }
 
 function workersByLocation($data, $key){
-  $return = array();
+  $return = [];
   foreach($data as $val) {
-      $return[$val[$key]] = $val;
+      $return[$val[$key]][] = $val;
       unset($return[$val[$key]][$key]);
   }
   return $return;
+}
+function by_location($org){
+  $url = getBaseUrl()."api/v1/by_location/".$org;
+  $request =  Http::get($url)->json();
+  $locations = $request['locations'];
+  $devices =  Worker::where('org', $org)->get();
+  $loc     = Location::where('org', $org)->get();
+  foreach($locations as $location){
+      $loc_device =  $location['location'];
+      foreach($location['devices'] as $device){
+        foreach($devices as $worker){
+          if($worker->uuid == $device['device']){
+            $data[] = [
+              'device_name' => $worker->name,
+              'uuid' => $device['device'],
+              'timestamp' => $device['timestamp'],
+              'probability' => $device['probability'],
+              'active_mins' => $device['active_mins'],
+              'first_seen' => $device['first_seen'],
+              'location' => $loc_device,
+              'is_trigger' => $worker->is_trigger
+            ];
+            
+          }
+        }
+      }
+  }
+  // foreach($loc as $l){
+  //   foreach($data as $dev){
+  //     if($l['location'] == $dev['location']){
+  //       $data_by_device_location[] = [
+  //         'device_name' => $dev->device_name,
+  //         'uuid' => $dev->uuid,
+  //         'timestamp' => $dev->timestamp,
+  //         'probability' => $dev->probability,
+  //         'active_mins' => $dev->active_mins,
+  //         'first_seen' => $dev->first_seen,
+  //         'location' => $dev->location,
+  //         'is_trigger' => $dev->is_trigger
+  //       ];
+  //     }
+  //   }
+  // }
+  //return json_encode($data_by_device_location);
+  //$result = group_by('location', $data);
+  return workersByLocation($data, 'location');
+  return $data;
+  return json_encode($loc);
 }
