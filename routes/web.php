@@ -48,6 +48,7 @@ Route::group(['prefix' => 'locations', 'middleware' => 'auth'], function() {
 Route::group(['prefix' => 'api', 'middleware' => 'auth'], function(){
     Route::get('/mqtt/{org}/{device}/{status}','WorkerController@mqtt');
     Route::get('/mqtt','WorkerController@mqttTest');
+    Route::get('/monitor','APIController@displayMonitor')->name('api.monitor');
     Route::get('/by_location/json', 'APIController@getCountWorkerByLocation')->name('api.rooms.by_location');
     Route::get('/calibrate','APIController@calibrate')->name('pcm.calibrate');
     Route::post('/danger','RoomController@store')->name('pcm.danger');

@@ -82,24 +82,25 @@ function getWorkerByLocation(){
   })
 }
 function getWorker(){
-  var hostApi = '{{route('worker.show.json')}}';
+  var hostApi = '{{route('api.monitor')}}';
   var i = 1;
   var table = $("#tworker").DataTable({
     ajax : {
       url : hostApi,
-      type: POST,
       dataSrc : (json) => {
         return json.data.map((row, index) => {
+          console.log(json.data);
           row.index = index + 1
           return row
         })
       },
     },
     columns : [
-      {"data": "index"},
-      {"data" : "worker"},
+      {"data" : "index"},
+      {"data" : "device_name"},
       {"data" : "location"},
-      {"data" : "probability"},
+      {"data" : "in_danger"},
+      {"data" : "accuracy"},
       {"data" : "active_mins"},
       {"data" : "timestamp"}
     ]
@@ -108,7 +109,7 @@ function getWorker(){
     table.ajax.reload()
   }, 1000)
 }
-setInterval(getWorkerByLocation,1000)
+//setInterval(getWorkerByLocation,1000)
 getWorker()
 </script>
 @stack('javascript')

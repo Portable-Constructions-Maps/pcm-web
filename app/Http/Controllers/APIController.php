@@ -15,7 +15,13 @@ class APIController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   
+    
+    public function displayMonitor(){
+        $data =  mergeData(by_location(getOrg()));
+        return [
+            "data" =>  $data,
+        ];
+    }
     public function calibrate(){
         $url = getBaseUrl(). "api/v1/calibrate/". getOrg();
         $result = Http::get($url)->json();

@@ -17,25 +17,25 @@ class WorkerController extends Controller
      */
 
     public function getWorker(){
-        $url = getBaseUrl() . "api/v1/by_location/". getOrg();
-        $request = Http::get($url)->json();
-        $result = $request['locations'];
+        // $url = getBaseUrl() . "api/v1/by_location/". getOrg();
+        // $request = Http::get($url)->json();
+        // $result = $request['locations'];
         
-        foreach($result as $items){
-            $location =  $items['location'];
-            foreach($items['devices'] as $a){
-                $timestamp = $a['timestamp'];
-                $data = [
-                    'worker' => $a['device'],
-                    'active_mins' => $a['active_mins'] ,
-                    'probability' => $a['probability'] * 100 . '%',
-                    'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
-                    'location' => $location
-                ];
-            }
-        }
-        $worker = ['data' => $data];
-        return $worker;
+        // foreach($result as $items){
+        //     $location =  $items['location'];
+        //     foreach($items['devices'] as $a){
+        //         $timestamp = $a['timestamp'];
+        //         $data = [
+        //             'worker' => $a['device'],
+        //             'active_mins' => $a['active_mins'] ,
+        //             'probability' => $a['probability'] * 100 . '%',
+        //             'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
+        //             'location' => $location
+        //         ];
+        //     }
+        // }
+        // $worker = ['data' => $data];
+        return workers_by_location(getOrg());
     }
     public function triggerWorker(Request $request){
         $status = $request->status == 1 ? true : false;

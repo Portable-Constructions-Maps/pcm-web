@@ -13,8 +13,11 @@ class MonitorController extends Controller
      */
     public function index()
     {
-        return by_location(getOrg());
-        return getDevicesByLocation(getOrg());
+        //$data =  mergeData(by_location(getOrg()));
+        //return workersByLocation($data,'location');
+        //return $data;
+        //return getDevicesByLocation(getOrg());
+        return view('monitors.index');
     }
 
     /**

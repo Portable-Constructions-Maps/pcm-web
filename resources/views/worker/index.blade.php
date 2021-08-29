@@ -76,20 +76,6 @@
               </tbody>
             </table>
           </div>
-          {{-- <div class="table-responsive">
-            <table class="table table-striped table-md" id="tworker">
-              <thead>
-              <tr>        
-                <th>#</th>
-                <th>Nama</th>
-                <th>Lokasi</th>
-                <th>Probability</th>
-                <th>Aktif(min)</th>
-                <th>Waktu</th>
-              </tr>
-              </thead>
-            </table>
-          </div> --}}
         </div> 
       </div>
       </div>

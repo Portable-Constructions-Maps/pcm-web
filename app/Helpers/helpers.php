@@ -181,6 +181,7 @@ function getDevicesByLocation($org) {
       //return $request;
       $data = null; 
       $head = $request['locations'];
+     
       foreach($head as $items){
         $location =  $items['location'];
         foreach($items['devices'] as $a){
@@ -204,9 +205,36 @@ function getDevicesByLocation($org) {
     }catch(\Exception $e){
       return setResponse("",false,"Error: connect ECONNREFUSED");
     }
-    
 }
-
+function mergeData($data){
+  $byData = $data;
+  $result = null;
+  $data_from_db = Location::where('org',getOrg())->get();
+  foreach($data_from_db as $d) {
+    foreach($byData as $bdt) {
+      if($d['name'] == $bdt['location']){
+        if($d['is_danger'] == 1){
+          //GET STATUS DEVICE
+          //DO:: Get Status Device
+          //IF STATUS DEVICE false then publish mqtt to device
+          
+          publishMqtt(getOrg(), $bdt['uuid'], true);
+        };
+        $result[] = [
+          'device_name' => $bdt['device_name'],
+          'uuid' => $bdt['uuid'],
+          'location' => $bdt['location'],
+          'in_danger' => $d['is_danger'],
+          'is_trigger' => $bdt['is_trigger'],
+          'active_mins' => $bdt['active_mins'],
+          'timestamp' => Carbon::parse($bdt['timestamp'])->diffForHumans(),
+          'accuracy' => $bdt['probability']* 100 ."". "%",
+        ];
+      }
+    }
+  }
+  return $result;
+}
 function workersByLocation($data, $key){
   $return = [];
   foreach($data as $val) {
@@ -259,7 +287,58 @@ function by_location($org){
   // }
   //return json_encode($data_by_device_location);
   //$result = group_by('location', $data);
-  return workersByLocation($data, 'location');
   return $data;
-  return json_encode($loc);
+  // return $data;
+  // return json_encode($loc);
+}
+function workers_by_location($org){
+  $url = getBaseUrl()."api/v1/by_location/".$org;
+  $request =  Http::get($url)->json();
+  $locations = $request['locations'];
+  $devices =  Worker::where('org', $org)->get();
+  $loc     = Location::where('org', $org)->get();
+  foreach($locations as $location){
+      $loc_device =  $location['location'];
+      foreach($location['devices'] as $device){
+        foreach($devices as $worker){
+          if($worker->uuid == $device['device']){
+            $data[] = [
+              'device_name' => $worker->name,
+              'uuid' => $device['device'],
+              'timestamp' =>  Carbon::parse($device['timestamp'])->diffForHumans(),
+              'probability' => $device['probability'],
+              'active_mins' => $device['active_mins'],
+              'first_seen' => $device['first_seen'],
+              'location' => $loc_device,
+              'is_trigger' => $worker->is_trigger
+            ];
+            
+          }
+        }
+      }
+  }
+  // foreach($loc as $l){
+  //   foreach($data as $dev){
+  //     if($l['location'] == $dev['location']){
+  //       $data_by_device_location[] = [
+  //         'device_name' => $dev->device_name,
+  //         'uuid' => $dev->uuid,
+  //         'timestamp' => $dev->timestamp,
+  //         'probability' => $dev->probability,
+  //         'active_mins' => $dev->active_mins,
+  //         'first_seen' => $dev->first_seen,
+  //         'location' => $dev->location,
+  //         'is_trigger' => $dev->is_trigger
+  //       ];
+  //     }
+  //   }
+  // }
+  //return json_encode($data_by_device_location);
+  //$result = group_by('location', $data);
+  $result = [
+    'data' => $data,
+  ];
+  return $result;
+  // return $data;
+  // return json_encode($loc);
 }
