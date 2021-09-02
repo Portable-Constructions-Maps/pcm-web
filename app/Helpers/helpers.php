@@ -235,6 +235,30 @@ function mergeData($data){
   }
   return $result;
 }
+function workerGroupByArea($data){
+  $return = [];
+  $locations = Location::where('org',getOrg())->get();
+  foreach($locations as $l) {
+    $location = $l['name'];
+    $isDanger = $l['is_danger'];
+    for($i = 0; $i < count($data); $i++){
+      if($data[$i]['location'] == $location){
+        $return[] = $data[$i];
+      }
+    }
+    // foreach($data as $d) {
+    //   if($d['location'] == $location){
+    //     $return[] = [
+    //       "location" => $d['location'],
+    //       "is_danger" => $isDanger,
+    //       "data" => $d
+    //     ];
+    //   }
+    // }
+  }
+  return $return;
+}
+
 function workersByLocation($data, $key){
   $return = [];
   foreach($data as $val) {
