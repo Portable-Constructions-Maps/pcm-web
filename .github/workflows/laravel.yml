@@ -4,9 +4,9 @@ name: Laravel Cloud Run
 
 on:
   push:
-    branches: [ docker ]
+    branches: [ dev ]
   pull_request:
-    branches: [ docker ]
+    branches: [ dev ]
 
 jobs:
   laravel-tests:
