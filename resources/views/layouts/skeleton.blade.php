@@ -107,7 +107,7 @@ function getWorker(){
   });
   setInterval(() => {
     table.ajax.reload()
-  }, 1000)
+  }, 50000)
 }
 //setInterval(getWorkerByLocation,1000)
 getWorker()
