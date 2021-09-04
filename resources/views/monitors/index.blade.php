@@ -8,21 +8,27 @@
   </div>
   <div class="section-body">
     <div class="row">
-        @foreach ($data as $item => $key)
+        @foreach ($data as $item)
         <div class="col-md-4">
             <div class="card card-hero">
               <div class="card-header">
-                <div class="card-icon">
-                  <i class="far fa-question-circle"></i>
-                </div>
-                <h4></h4>
-                <div class="card-description"></div>
+                  <div class="card-icon">
+                    @if($item['is_danger'])
+                    <i class="fas fa-exclamation-triangle"></i>
+                    @else
+                    <i class="fas fa-user-shield"></i>
+                    @endif
+                  </div>
+                  <h4>{{$item['location']}}</h4>
+                  <div class="card-description">
+                    {{$item['is_danger'] ? 'Danger' : 'Safe'}}
+                  </div>
               </div>
               <div class="card-body">
                 <ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">
-                    @foreach ($item as $worker)
+                    @foreach($item['data'] as $worker)
                     <li class="media">
-                        <img alt="image" class="mr-3 rounded-circle" width="50" src="src="{{ Auth::user()->avatar ?: 'https://ui-avatars.com/api/?size=96&name='.(Auth::user()->name ? substr(Auth::user()->name, 0, 1) : '?') }}">
+                        <img alt="image" class="mr-3 rounded-circle" width="50" src="https://ui-avatars.com/api/?size=96&name={{substr($worker['device_name'], 0, 1) }}">
                         <div class="media-body">
                           <div class="media-title">{{$worker['device_name']}}</div>
                           <div class="text-job text-muted">{{$worker['timestamp']}}</div>

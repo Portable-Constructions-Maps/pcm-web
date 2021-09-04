@@ -15,10 +15,10 @@ class MonitorController extends Controller
     {
         $data =  mergeData(by_location(getOrg()));
         $byarea = workersByLocation($data,'location');
-        return workerGroupByArea($data);
+        $workergroup = workerGroupByArea($data);
         //return $data;
         //return getDevicesByLocation(getOrg());
-        return view('monitors.index')->with('data', $byarea);
+        return view('monitors.index')->with('data', $workergroup);
     }
 
     /**
