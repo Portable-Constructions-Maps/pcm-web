@@ -81,6 +81,24 @@ function getWorkerByLocation(){
     }
   })
 }
+// function workerGroup(){
+//   var hostApi = '{{route('api.rooms.by_location')}}';
+//   var card = document.getElementById("data_by_locations");
+//   $.ajax({
+//     url: hostApi,
+//     method : "GET",
+//     type : "json",
+//     success : function(data){
+//       data.forEach(element => {
+//         console.log(element.data)
+//         if(!element.is_danger){
+//           bgDanger = "bg-primary"
+//         }
+//         card.innerHTML = ()
+//       });
+//     }
+//   })
+// }
 function getWorker(){
   var hostApi = '{{route('api.monitor')}}';
   var i = 1;
@@ -110,6 +128,7 @@ function getWorker(){
   }, 15000)
 }
 //setInterval(getWorkerByLocation,1000)
+//setInterval(workerGroup,1000)
 getWorker()
 </script>
 @stack('javascript')

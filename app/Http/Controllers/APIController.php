@@ -36,30 +36,13 @@ class APIController extends Controller
 
     }
     public function getWokrersByLocation() {
-        $url = getBaseUrl()."api/v1/by_location/". getOrg();
-        $request = Http::get($url)->json();
-        $result = $request['locations'];
-        $data = [];
-        foreach($result as $items){
-            $location =  $items['location'];
-            foreach($items['devices'] as $a){
-                $timestamp = $a['timestamp'];
-                $data[] = [
-                    'worker' => $a['device'],
-                    'active_mins' => $a['active_mins'] ,
-                    'probability' => $a['probability'],
-                    'timestamp' => Carbon::parse($timestamp)->diffForHumans(),
-                    'first_seen' => $a['first_seen'],
-                    'active_mins' => $a['active_mins'],
-                    'location' => $location
-                ];
-            }
-        }
-        $worker = ['data' => $data];
-        if($worker!==null){
-            return $worker;
-        }
-        
+        $data =  mergeData(by_location(getOrg()));
+        $byarea = workersByLocation($data,'location');
+        $workergroup = workerGroupByArea($data);
+
+        return $result = [
+            "data" => $workergroup
+        ];
     }
     public function getCountWorkerByLocation(){
         $url = getBaseUrl()."api/v1/by_location/". getOrg();
