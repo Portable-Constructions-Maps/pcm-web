@@ -39,7 +39,7 @@ class APIController extends Controller
         $data =  mergeData(by_location(getOrg()));
         $byarea = workersByLocation($data,'location');
         $workergroup = workerGroupByArea($data);
-
+        return $workergroup;
         return $result = [
             "data" => $workergroup
         ];

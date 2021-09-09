@@ -55,13 +55,13 @@ function getWorkerByLocation(){
     method : "GET",
     type : "json",
     success : function(data){
+      console.log(data);
       data.forEach(element => {
-        console.log(element.locations)
+        // console.log(element)
         if(!element.is_danger){
           bgDanger = "bg-primary"
         }
         card.innerHTML = (
-          " <div class='row'>" +
             "<div class='col-lg-3 col-md-6 col-sm-6 col-12'>"+
              " <div class='card card-statistic-1'>"+
                   "<div class='card-icon "+bgDanger+"'>"+
@@ -75,30 +75,66 @@ function getWorkerByLocation(){
                       +element.total+
                     " Pekerja </div>"+
                "   </div>"+
-            "  </div>"+
-      "</div>")
+            "  </div>")
       });
     }
   })
 }
-// function workerGroup(){
-//   var hostApi = '{{route('api.rooms.by_location')}}';
-//   var card = document.getElementById("data_by_locations");
-//   $.ajax({
-//     url: hostApi,
-//     method : "GET",
-//     type : "json",
-//     success : function(data){
-//       data.forEach(element => {
-//         console.log(element.data)
-//         if(!element.is_danger){
-//           bgDanger = "bg-primary"
-//         }
-//         card.innerHTML = ()
-//       });
-//     }
-//   })
-// }
+function workerGroup(){
+  var hostApi = '{{route('api.rooms.by_location')}}';
+  var card = document.getElementById("card-monitor");
+  $.ajax({
+    url: hostApi,
+    method : "GET",
+    type : "json",
+    success : function(data){
+      data.forEach(element => {
+        console.log(element)
+        var worker = element.data
+        const danger = element.is_danger ? '<i class="fas fa-exclamation-triangle"></i>' : '<i class="fas fa-user-shield"></i>';
+        const statusDanger = element.is_danger ? 'Danger' : 'Safe';
+        const content = 
+        '<div class="col-md-4">'+
+            '<div class="card card-hero">'+
+              '<div class="card-header">'+
+                 ' <div class="card-icon">'+
+                    danger+
+                  '</div>'+
+                 ' <h4>'+element.location+'</h4>'
+                  '<div class="card-description">'+
+                    statusDanger+
+                 ' </div>'+
+              '</div>'+
+             '<div class="card-body">'+
+               '<ul class="list-unstyled user-progress list-unstyled-border list-unstyled-noborder">'+
+                element.data.forEach(worker => {
+                      console.log(worker);
+                      '<li class="media">'+
+                        '<img alt="image" class="mr-3 rounded-circle" width="50" src="https://ui-avatars.com/api/?size=96&name={{substr('+worker.device_name+', 0, 1) }}">'+
+                       ' <div class="media-body">'+
+                         ' <div class="media-title">'+worker.device_name+'</div>'+
+                         ' <div class="text-job text-muted">'+worker.timestamp+'</div>'+
+                       ' </div>'+
+                        '<div class="media-progressbar">'+
+                         '<div class="progress-text">'+ worker.accuracy+'</div>'+
+                          '<div class="progress" data-height="6" style="height: 6px;">'+
+                           ' <div class="progress-bar bg-primary" data-width="'+worker.accuracy+'" style="width: '+worker.accuracy+';"></div>'+
+                         ' </div>'+
+                        '</div>'+
+                        '<div class="media-cta">'+
+                         ' <a href="#" class="btn btn-outline-warning">Peringatkan</a>'+
+                        '</div>'+
+                      '</li>'
+                      });
+               ' </ul>'+
+              '</div>'+
+           ' </div>'+
+         ' </div>';
+        card.innerHTML += content;
+      });
+    }
+  });
+}
 function getWorker(){
   var hostApi = '{{route('api.monitor')}}';
   var i = 1;
@@ -129,6 +165,7 @@ function getWorker(){
 }
 //setInterval(getWorkerByLocation,1000)
 //setInterval(workerGroup,1000)
+//workerGroup()
 getWorker()
 </script>
 @stack('javascript')
